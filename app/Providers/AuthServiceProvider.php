@@ -29,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider
         if (!app()->runningInConsole()) {
             Passport::routes();
         };
+
+        Gate::define('volonter-update-dostava', function ($user, $dostava) {
+            return $user->id == $dostava->dostavljac_id;
+        });
     }
 
 }

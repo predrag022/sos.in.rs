@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('content')
 <div class="content">
-    @can('dostave_create')
+    @can('operater')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route("admin.dostaves.create") }}">
-                    {{ trans('global.add') }} {{ trans('cruds.dostave.title_singular') }}
+                    Dodavanje dostave
                 </a>
             </div>
         </div>
@@ -14,17 +14,17 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('cruds.dostave.title_singular') }} {{ trans('global.list') }}
+                    Lista dostava
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class=" table table-bordered table-striped table-hover datatable datatable-Dostave">
                             <thead>
-                                <tr>
-                                    <th width="10">
+                            <tr>
+                                <th width="10">
 
-                                    </th>
-                                    <th>
+                                </th>
+                                <th>
                                         {{ trans('cruds.dostave.fields.id') }}
                                     </th>
                                     <th>
@@ -90,23 +90,39 @@
                                             {{ $dostave->dostavljac->name ?? '' }}
                                         </td>
                                         <td>
-                                            @can('dostave_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.dostaves.show', $dostave->id) }}">
+                                            @can('operater')
+                                                <a class="btn btn-xs btn-primary"
+                                                   href="{{ route('admin.dostaves.show', $dostave->id) }}">
+                                                    {{ trans('global.view') }}
+                                                </a>
+                                            @elsecan('volonter-update-dostava', $dostave)
+                                                <a class="btn btn-xs btn-primary"
+                                                   href="{{ route('admin.dostaves.show', $dostave->id) }}">
                                                     {{ trans('global.view') }}
                                                 </a>
                                             @endcan
 
-                                            @can('dostave_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('admin.dostaves.edit', $dostave->id) }}">
+                                            @can('operater')
+                                                <a class="btn btn-xs btn-info"
+                                                   href="{{ route('admin.dostaves.edit', $dostave->id) }}">
+                                                    {{ trans('global.edit') }}
+                                                </a>
+                                            @elsecan('volonter-update-dostava', $dostave)
+                                                <a class="btn btn-xs btn-info"
+                                                   href="{{ route('admin.dostaves.edit', $dostave->id) }}">
                                                     {{ trans('global.edit') }}
                                                 </a>
                                             @endcan
 
-                                            @can('dostave_delete')
-                                                <form action="{{ route('admin.dostaves.destroy', $dostave->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            @can('operater')
+                                                <form action="{{ route('admin.dostaves.destroy', $dostave->id) }}"
+                                                      method="POST"
+                                                      onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
+                                                      style="display: inline-block;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                    <input type="submit" class="btn btn-xs btn-danger"
+                                                           value="{{ trans('global.delete') }}">
                                                 </form>
                                             @endcan
 
