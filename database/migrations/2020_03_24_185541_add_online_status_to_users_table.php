@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPhoneNumberToUsersTable extends Migration
+class AddOnlineStatusToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddPhoneNumberToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number')->nullable()->unique();
+            $table->tinyInteger('online_status')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddPhoneNumberToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('phone_number');
+            $table->dropColumn('online_status');
         });
     }
 }

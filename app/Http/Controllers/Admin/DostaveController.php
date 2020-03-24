@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyDostaveRequest;
 use App\Http\Requests\StoreDostaveRequest;
 use App\Http\Requests\UpdateDostaveRequest;
+use App\Mail\KreiranaDostava;
+use App\Mail\WelcomeMail;
 use App\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
 class DostaveController extends Controller
@@ -29,7 +32,7 @@ class DostaveController extends Controller
         } else if ($currentUser->getIsVolonterAttribute()) {
             $dostaves = Dostave::where('dostavljac_id', $currentUser->id)->get();
         } else if ($currentUser->getIsOperaterAttribute()) {
-            $dostaves = Dostave::where('dostavljac_id', $currentUser->id)->get();
+            $dostaves = Dostave::where('organization_id', $currentUser->organization_id)->get();
         }
 
         return view('admin.dostaves.index', compact('dostaves'));
@@ -38,19 +41,51 @@ class DostaveController extends Controller
     public function create()
     {
         abort_if(Gate::denies('dostave_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $currentUser = auth()->user();
 
-        $organizations = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $dostavljacs = User::where('organization_id', $currentUser->organization->id)
+//            ->where('online_status', 1)
+            ->whereHas(
+                'roles', function ($q) {
+                $q->where('title', 'Volonter');
+            }
+            )->get();
 
-        $operaters = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $dostavljacs = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $dostavljacs = $dostavljacs->map(function ($dostavljac) {
+
+            $aktivnihDostava = Dostave::where('dostavljac_id', $dostavljac->id)->where('status', 'nova')->count();
+            $dostavljac->name = $dostavljac->name . ' (broj trenutnih dostava koje nisu kompletirane:' . $aktivnihDostava . ')';
+
+            return $dostavljac;
+        });
+
+        $dostavljacs = $dostavljacs->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.dostaves.create', compact('organizations', 'operaters', 'dostavljacs'));
     }
 
     public function store(StoreDostaveRequest $request)
     {
-        $dostave = Dostave::create($request->all());
+
+        $data = $request->all();
+
+        $currentUser = auth()->user();
+
+
+        $data['operater_id'] = $currentUser->id;
+        $data['organization_id'] = $currentUser->organization_id;
+        $data['status'] = 'nova';
+
+        $dostava = Dostave::create($data);
+
+        $dostava->text = 'Kreiran vam je volonterski nalog u okviru organizacije:';
+
+        $dostavljac = User::find($request->dostavljac_id);
+
+        $dostava->kreirao = $currentUser;
+
+        Mail::to($dostavljac->email)->send(new KreiranaDostava($dostava));
 
         return redirect()->route('admin.dostaves.index');
 
@@ -60,22 +95,38 @@ class DostaveController extends Controller
     {
         abort_if(Gate::denies('dostave_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $limited = false;
         $dostave = $dostafe;
+        $this->checkAccessToDostava($dostafe);
 
-        $organizations = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $operaters = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $currentUser = auth()->user();
 
-        $dostavljacs = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $dostavljacs = User::where('organization_id', $currentUser->organization->id)
+//            ->where('online_status', 1)
+            ->whereHas(
+                'roles', function ($q) {
+                $q->where('title', 'Volonter');
+            }
+            )->get();
 
-        $dostave->load('organization', 'operater', 'dostavljac');
 
-        return view('admin.dostaves.edit', compact('organizations', 'operaters', 'dostavljacs', 'dostave'));
+        $dostavljacs = $dostavljacs->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $dostave->load('dostavljac');
+
+
+        if ($currentUser->getIsVolonterAttribute()) {
+            $limited = true;
+        }
+
+        return view('admin.dostaves.edit', compact('dostavljacs', 'dostave', 'limited'));
     }
 
     public function update(UpdateDostaveRequest $request, Dostave $dostafe)
     {
         $dostave = $dostafe;
+        $this->checkAccessToDostava($dostafe);
         $dostave->update($request->all());
 
         return redirect()->route('admin.dostaves.index');
@@ -87,6 +138,9 @@ class DostaveController extends Controller
         abort_if(Gate::denies('dostave_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $dostave = $dostafe;
+
+        $this->checkAccessToDostava($dostafe);
+
         $dostave->load('organization', 'operater', 'dostavljac');
 
         return view('admin.dostaves.show', compact('dostave'));
@@ -96,6 +150,7 @@ class DostaveController extends Controller
     {
         abort_if(Gate::denies('dostave_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $dostave = $dostafe;
+        $this->checkAccessToDostava($dostafe);
         $dostave->delete();
 
         return back();
@@ -110,21 +165,30 @@ class DostaveController extends Controller
 
     }
 
-    public function checkAccessToDostava()
+    public function checkAccessToDostava($dostava)
     {
 
-
         $currentUser = auth()->user();
-        $dostaves = [];
+        $canSee = false;
 
         if ($currentUser->getIsAdminAttribute()) {
-            $dostaves = Dostave::all();
-        } else if ($currentUser->getIsOrganizacijaAttribute()) {
-            $dostaves = Dostave::where('organization_id', $currentUser->id)->get();
-        } else if ($currentUser->getIsVolonterAttribute()) {
-            $dostaves = Dostave::where('organization_id', $currentUser->organization_id)->get();
-        } else if ($currentUser->getIsOperaterAttribute()) {
-            $dostaves = Dostave::where('dostavljac_id', $currentUser->id)->get();
+            $canSee = true;
+
+        } else if ($currentUser->getIsOrganizacijaAttribute() && $dostava->organization_id == $currentUser->id) {
+            $canSee = true;
+        } else if ($currentUser->getIsVolonterAttribute() && $dostava->dostavljac_id == $currentUser->id) {
+
+            $canSee = true;
+
+        } else if ($currentUser->getIsOperaterAttribute() && $dostava->organization_id == $currentUser->organization->id) {
+
+            $canSee = true;
+
+        }
+
+        if (!$canSee) {
+            abort(Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         }
 
     }

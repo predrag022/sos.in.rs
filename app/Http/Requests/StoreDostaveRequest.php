@@ -23,13 +23,7 @@ class StoreDostaveRequest extends FormRequest
             'name'          => [
                 'required'],
             'address'       => [
-                'required'],
-            'operater_id'   => [
-                'required',
-                'integer'],
-            'dostavljac_id' => [
-                'required',
-                'integer'],
+                'required']
         ];
 
     }

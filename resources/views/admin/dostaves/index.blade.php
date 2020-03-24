@@ -72,7 +72,14 @@
                                             {{ $dostave->address ?? '' }}
                                         </td>
                                         <td>
-                                            {{ App\Dostave::STATUS_SELECT[$dostave->status] ?? '' }}
+                                            @if($dostave->status == 'prihvacena')
+                                                <span class="badge bg-primary">prihvatio volonter</span>
+                                            @elseif($dostave->status == 'dostavljena')
+                                                <span class="badge bg-success">dostavljena</span>
+                                            @else
+                                                <span class="badge bg-danger">nova</span>
+                                            @endif
+                                            {{--                                            {{ App\Dostave::STATUS_SELECT[$dostave->status] ?? '' }}--}}
                                         </td>
                                         <td>
                                             {{ $dostave->spisak ?? '' }}
