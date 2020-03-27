@@ -46,6 +46,7 @@ class User extends Authenticatable
         'organization_id',
         'email_verified_at',
         'verification_token',
+        'phone_number',
     ];
 
     public function getIsAdminAttribute()
@@ -54,12 +55,30 @@ class User extends Authenticatable
 
     }
 
+    public function getIsOrganizacijaAttribute()
+    {
+        return $this->roles()->where('id', 3)->exists();
+
+    }
+
+    public function getIsVolonterAttribute()
+    {
+        return $this->roles()->where('id', 4)->exists();
+
+    }
+
+    public function getIsOperaterAttribute()
+    {
+        return $this->roles()->where('id', 5)->exists();
+
+    }
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         self::created(function (User $user) {
             if (auth()->check()) {
-                $user->verified    = 1;
+                $user->verified = 1;
                 $user->verified_at = Carbon::now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
                 $user->save();
             } elseif (!$user->verification_token) {
@@ -135,6 +154,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'organization_id');
 
+    }
+
+    public function dostaveKreirane()
+    {
+        return $this->hasMany(Dostave::class, 'operater_id');
+    }
+
+    public function dostaveDodeljene()
+    {
+        return $this->hasMany(Dostave::class, 'dostavljac_id');
     }
 
 }

@@ -6,7 +6,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('global.create') }} {{ trans('cruds.dostave.title_singular') }}
+                    Dodavanje dostave
                 </div>
                 <div class="panel-body">
                     <form method="POST" action="{{ route("admin.dostaves.store") }}" enctype="multipart/form-data">
@@ -42,30 +42,6 @@
                                 <span class="help-block" role="alert">{{ $errors->first('phone_number') }}</span>
                             @endif
                             <span class="help-block">{{ trans('cruds.dostave.fields.phone_number_helper') }}</span>
-                        </div>
-                        <div class="form-group {{ $errors->has('organization') ? 'has-error' : '' }}">
-                            <label for="organization_id">{{ trans('cruds.dostave.fields.organization') }}</label>
-                            <select class="form-control select2" name="organization_id" id="organization_id">
-                                @foreach($organizations as $id => $organization)
-                                    <option value="{{ $id }}" {{ old('organization_id') == $id ? 'selected' : '' }}>{{ $organization }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('organization'))
-                                <span class="help-block" role="alert">{{ $errors->first('organization') }}</span>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.dostave.fields.organization_helper') }}</span>
-                        </div>
-                        <div class="form-group {{ $errors->has('operater') ? 'has-error' : '' }}">
-                            <label class="required" for="operater_id">{{ trans('cruds.dostave.fields.operater') }}</label>
-                            <select class="form-control select2" name="operater_id" id="operater_id" required>
-                                @foreach($operaters as $id => $operater)
-                                    <option value="{{ $id }}" {{ old('operater_id') == $id ? 'selected' : '' }}>{{ $operater }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('operater'))
-                                <span class="help-block" role="alert">{{ $errors->first('operater') }}</span>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.dostave.fields.operater_helper') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('dostavljac') ? 'has-error' : '' }}">
                             <label class="required" for="dostavljac_id">{{ trans('cruds.dostave.fields.dostavljac') }}</label>

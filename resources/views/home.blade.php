@@ -5,7 +5,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Dashboard
+                    Početna strana
                 </div>
 
                 <div class="panel-body">
@@ -16,6 +16,15 @@
                     @endif
 
                     <div class="row">
+                        <div class="panel-body">
+                            <h3>Vaša orgnizacija: {{$currentUser->organization->name ?? ''}}</h3>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="panel-body">
                         <div class="{{ $chart1->options['column_class'] }}">
                             <h3>{!! $chart1->options['chart_title'] !!}</h3>
                             {!! $chart1->renderHtml() !!}
@@ -25,6 +34,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 @section('scripts')

@@ -216,17 +216,63 @@
         extend: 'colvis',
         className: 'btn-default',
         text: colvisButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
+          exportOptions: {
+              columns: ':visible'
+          }
       }
     ]
   });
 
-  $.fn.dataTable.ext.classes.sPageButton = '';
-});
+            $.fn.dataTable.ext.classes.sPageButton = '';
+        });
 
     </script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-messaging.js"></script>
+
+    <script>
+        // // Your web app's Firebase configuration
+        var config = {
+            apiKey: "AIzaSyCDgPLq3W9lFwoeCU8Eob99KdUnZy4N_s4",
+            authDomain: "volonteri2020.firebaseapp.com",
+            databaseURL: "https://volonteri2020.firebaseio.com",
+            projectId: "volonteri2020",
+            storageBucket: "volonteri2020.appspot.com",
+            messagingSenderId: "640191933175",
+            appId: "1:640191933175:web:0421842f019e72921381f2"
+        };
+        // // Initialize Firebase
+        // firebase.initializeApp(firebaseConfig);
+
+
+        // const messaging = firebase.messaging();
+
+        firebase.initializeApp(config);
+
+        const messaging = firebase.messaging();
+        messaging.requestPermission().then(function () {
+            //getToken(messaging);
+            return messaging.getToken();
+        }).then(function (token) {
+            console.log(token);
+        })
+            .catch(function (err) {
+                console.log('Permission denied', err);
+            });
+
+
+        messaging.onMessage(function (payload) {
+            console.log('onMessage: ', payload);
+        });
+
+
+    </script>
+
+
     @yield('scripts')
 </body>
 

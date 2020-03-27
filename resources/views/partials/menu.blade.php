@@ -9,6 +9,36 @@
                     {{ trans('global.dashboard') }}
                 </a>
             </li>
+            @can('organizacija')
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa-fw fas fa-users">
+                        </i>
+                        <span>Upravljanje korisnicima</span>
+                        <span class="pull-right-container"><i class="fa fa-fw fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @can('organizacija')
+                            <li class="{{ request()->is('admin/operateri') || request()->is('admin/operateri/*') ? 'active' : '' }}">
+                                <a href="{{ route("admin.operateri.index") }}">
+                                    <i class="fa-fw fas fa-user">
+                                    </i>
+                                    <span>Operateri</span>
+                                </a>
+                            </li>
+
+                            <li class="{{ request()->is('admin/volonteri') || request()->is('admin/volonteri/*') ? 'active' : '' }}">
+                                <a href="{{ route("admin.volonteri.index") }}">
+                                    <i class="fa-fw fas fa-user">
+
+                                    </i>
+                                    <span>Volonteri</span>
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
             @can('user_management_access')
                 <li class="treeview">
                     <a href="#">

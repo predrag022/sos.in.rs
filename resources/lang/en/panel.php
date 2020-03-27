@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'sos.in.rs',
+    'site_title' => 'volonter2020',
 ];
