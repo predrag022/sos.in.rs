@@ -12,6 +12,7 @@
         "bugsnag/bugsnag-laravel": "^2.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "laravel-notification-channels/fcm": "^2.0",
         "laravel/framework": "^6.2",
         "laravel/passport": "^8.4",
         "laravel/tinker": "^1.0",

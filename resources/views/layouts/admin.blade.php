@@ -216,17 +216,61 @@
         extend: 'colvis',
         className: 'btn-default',
         text: colvisButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
+          exportOptions: {
+              columns: ':visible'
+          }
       }
     ]
   });
 
-  $.fn.dataTable.ext.classes.sPageButton = '';
-});
+            $.fn.dataTable.ext.classes.sPageButton = '';
+        });
 
     </script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-messaging.js"></script>
+    <script src="/firebase-messaging-sw.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCDgPLq3W9lFwoeCU8Eob99KdUnZy4N_s4",
+            authDomain: "volonteri2020.firebaseapp.com",
+            databaseURL: "https://volonteri2020.firebaseio.com",
+            projectId: "volonteri2020",
+            storageBucket: "volonteri2020.appspot.com",
+            messagingSenderId: "640191933175",
+            appId: "1:640191933175:web:0421842f019e72921381f2"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        messaging.getToken().then((currentToken) => {
+            if (currentToken) {
+                sendTokenToServer(currentToken);
+                updateUIForPushEnabled(currentToken);
+            } else {
+                // Show permission request.
+                console.log('No Instance ID token available. Request permission to generate one.');
+                // Show permission UI.
+                updateUIForPushPermissionRequired();
+                setTokenSentToServer(false);
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+            showToken('Error retrieving Instance ID token. ', err);
+            setTokenSentToServer(false);
+        });
+    </script>
+
+
     @yield('scripts')
 </body>
 
