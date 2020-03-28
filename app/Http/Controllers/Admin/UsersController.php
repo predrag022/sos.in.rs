@@ -20,7 +20,7 @@ class UsersController extends Controller
 
         echo $_SERVER['HTTP_USER_AGENT'];
         echo '<br>';
-        echo $_SERVER["HTTP_X_REQUESTED_WITH"];
+        echo isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'empty';
         $users = User::all();
 
         return view('admin.users.index', compact('users'));
