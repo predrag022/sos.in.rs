@@ -21,7 +21,7 @@
             {!! $bottomText->text !!}
         </div>
         <div class="col-md-4">
-            <a class="btn btn-lg btn-secondary btn-block" href="/register">Registrujte svoju orgnizaciju</a>
+            <a class="btn btn-lg btn-secondary btn-block" href="/register">Registrujte svoju organizaciju</a>
         </div>
     </div>
 
