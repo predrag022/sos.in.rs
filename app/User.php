@@ -156,6 +156,12 @@ class User extends Authenticatable
 
     }
 
+    public function organizationRight()
+    {
+        return $this->belongsTo(User::class, 'organization_id', 'organization_id');
+
+    }
+
     public function dostaveKreirane()
     {
         return $this->hasMany(Dostave::class, 'operater_id');

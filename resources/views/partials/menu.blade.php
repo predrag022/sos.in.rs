@@ -36,10 +36,12 @@
                                 </a>
                             </li>
                         @endcan
+
                     </ul>
                 </li>
             @endcan
-            @can('user_management_access')
+
+        @can('user_management_access')
                 <li class="treeview">
                     <a href="#">
                         <i class="fa-fw fas fa-users">
@@ -155,6 +157,16 @@
 
                         </i>
                         <span>{{ trans('cruds.block.title') }}</span>
+                    </a>
+                </li>
+            @endcan
+            @can('operater')
+                <li class="{{ request()->is('admin/volonterioperater') || request()->is('admin/volonterioperater/*') ? 'active' : '' }}">
+                    <a href="{{ route("admin.volonterioperater.index") }}">
+                        <i class="fa-fw fas fa-user">
+
+                        </i>
+                        <span>Volonteri</span>
                     </a>
                 </li>
             @endcan

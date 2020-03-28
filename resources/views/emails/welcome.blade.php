@@ -6,12 +6,9 @@
         <br/>
         Lozinka: {{$user['password_real']}}
     </div>
-
     @component('mail::button', ['url' => url('/login')])
         Login
     @endcomponent
-
-
-    Hvala,
+    Hvala,<br/>
     {{ config('app.name') }}
 @endcomponent
