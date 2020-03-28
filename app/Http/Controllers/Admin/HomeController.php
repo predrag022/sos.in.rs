@@ -10,6 +10,7 @@ class HomeController
     public function index()
     {
         $currentUser = auth()->user();
+        $getAndroidToken = false;
 
 
         $condition = '';
@@ -48,6 +49,23 @@ class HomeController
 
         $chart1 = new LaravelChart($settings1);
 
-        return view('home', compact('chart1', 'organization'));
+
+        $androidApp = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'empty';
+
+
+        if ($androidApp == "com.android.volonteri2020") {
+
+            $userToken = $currentUser->token;
+
+            if ($userToken == '' || is_null($userToken)) {
+                $getAndroidToken = true;
+
+            }
+
+
+        }
+
+
+        return view('home', compact('chart1', 'organization', 'getAndroidToken'));
     }
 }
