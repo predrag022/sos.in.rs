@@ -6,10 +6,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Početna strana
-                        @if($getAndroidToken)
-                            <a id="get_firebase_token" class="btn btn-primary" onClick="getFirebaseToken()">Firebase
-                                token</a>
-                        @endif
+{{--Z--}}
                     </div>
 
                     <div class="panel-body">
@@ -42,12 +39,21 @@
 @endsection
 @section('scripts')
 
-@parent
-<script>
-    function getFirebaseToken() {
-        alert(android.getFirebaseToken());
-    }
-</script>
+    @parent
+    @if($getAndroidToken)
+        <script>
+            var token = 'android.getFirebaseToken()';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/admin/token/' + token);
+            xhr.send(null);
+            xhr.onreadystatechange = function () {
+                var DONE = 4; // readyState 4 means the request is done.
+                var OK = 200; // status 200 is a successful return.
+                if (xhr.readyState === DONE) {
+                }
+            }
+        </script>
+    @endif
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 {!! $chart1->renderJs() !!}
 
