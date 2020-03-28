@@ -42,9 +42,8 @@
     @parent
     @if($getAndroidToken)
         <script>
-            var token = 'android.getFirebaseToken()';
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/admin/token/' + token);
+            xhr.open('GET', '/admin/token/' + android.getFirebaseToken());
             xhr.send(null);
             xhr.onreadystatechange = function () {
                 var DONE = 4; // readyState 4 means the request is done.
