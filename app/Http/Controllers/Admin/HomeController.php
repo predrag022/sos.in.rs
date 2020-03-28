@@ -68,4 +68,14 @@ class HomeController
 
         return view('home', compact('chart1', 'organization', 'getAndroidToken'));
     }
+
+    public function token($token)
+    {
+
+        if (!empty($token)) {
+            $currentUser = auth()->user();
+            $currentUser->update(['token' => $token]);
+        }
+
+    }
 }

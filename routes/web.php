@@ -23,6 +23,7 @@ Route::get('userVerification/{token}', 'UserVerificationController@approve')->na
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('token/{token}', 'HomeController@token')->name('token');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
