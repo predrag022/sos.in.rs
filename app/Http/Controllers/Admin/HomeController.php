@@ -10,14 +10,20 @@ class HomeController
     public function index()
     {
         $currentUser = auth()->user();
+
+
         $condition = '';
+        $organization = $currentUser->name;
 
         if ($currentUser->getIsOrganizacijaAttribute()) {
             $condition = 'organization_id = ' . $currentUser->id;
+            $organization = $currentUser->name;
         } else if ($currentUser->getIsVolonterAttribute()) {
             $condition = 'dostavljac_id = ' . $currentUser->id;
+            $organization = $currentUser->organization->name;
         } else if ($currentUser->getIsOperaterAttribute()) {
             $condition = 'organization_id = ' . $currentUser->organization_id;
+            $organization = $currentUser->organization->name;
         }
 
 
@@ -42,6 +48,6 @@ class HomeController
 
         $chart1 = new LaravelChart($settings1);
 
-        return view('home', compact('chart1', 'currentUser'));
+        return view('home', compact('chart1', 'organization'));
     }
 }

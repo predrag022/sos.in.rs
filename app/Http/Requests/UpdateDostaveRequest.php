@@ -19,12 +19,12 @@ class UpdateDostaveRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'name'          => [
-                'required'],
-            'address'       => [
-                'required']
-        ];
+//        return [
+//            'name'          => [
+//                'required'],
+//            'address'       => [
+//                'required']
+//        ];
 
     }
 }

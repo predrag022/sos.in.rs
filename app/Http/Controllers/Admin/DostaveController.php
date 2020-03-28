@@ -6,6 +6,7 @@ use App\Dostave;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyDostaveRequest;
 use App\Http\Requests\StoreDostaveRequest;
+use App\Http\Requests\UpdateDostaveAcceptRequest;
 use App\Http\Requests\UpdateDostaveRequest;
 use App\Mail\KreiranaDostava;
 use App\Mail\WelcomeMail;
@@ -87,6 +88,7 @@ class DostaveController extends Controller
 
         Mail::to($dostavljac->email)->send(new KreiranaDostava($dostava));
 
+
         return redirect()->route('admin.dostaves.index');
 
     }
@@ -123,13 +125,62 @@ class DostaveController extends Controller
         return view('admin.dostaves.edit', compact('dostavljacs', 'dostave', 'limited'));
     }
 
-    public function update(UpdateDostaveRequest $request, Dostave $dostafe)
+    public function update(Request $request, Dostave $dostafe)
     {
         $dostave = $dostafe;
         $this->checkAccessToDostava($dostafe);
         $dostave->update($request->all());
 
         return redirect()->route('admin.dostaves.index');
+
+    }
+
+    public function accept(Dostave $dostafe)
+    {
+        abort_if(Gate::denies('volonter'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+
+        $dostave = $dostafe;
+        $this->checkAccessToDostava($dostafe);
+
+        if ($dostave->status == 'nova') {
+            $data = ['status' => 'prihvacena'];
+            $dostave->update($data);
+            return 'Prihvatili ste dostavu. Možete ugasiti ovaj prozor';
+        }
+
+        if ($dostave->status == 'prihvacena') {
+            return 'Dostava je već prihvaćena. Možete ugasiti ovaj prozor';
+        }
+
+        if ($dostave->status == 'dostavljena') {
+            return 'Dostava je već dostavljena :). Možete ugasiti ovaj prozor';
+        }
+
+
+    }
+
+    public function delivered(Dostave $dostafe)
+    {
+        abort_if(Gate::denies('volonter'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $dostave = $dostafe;
+        $this->checkAccessToDostava($dostafe);
+
+        if ($dostave->status == 'nova') {
+            return 'Morate prvo da prihvatite isporuku ove dostave';
+        }
+
+        if ($dostave->status == 'prihvacena') {
+            $data = ['status' => 'dostavljena'];
+            $dostave->update($data);
+            return 'Hvala na isporučenoj dostavi !';
+        }
+
+        if ($dostave->status == 'dostavljena') {
+            return 'Dostava je već dostavljena  :). Možete ugasiti ovaj prozor';
+        }
+
 
     }
 
