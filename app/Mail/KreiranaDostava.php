@@ -31,6 +31,6 @@ class KreiranaDostava extends Mailable
     public function build()
     {
         return $this->subject('Nova dostava')
-            ->view('emails.nova_dostava');
+            ->markdown('emails.nova_dostava');
     }
 }

@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'volonter2020',
+    'site_title' => 'volonteri2020',
 ];

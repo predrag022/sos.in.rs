@@ -73,11 +73,14 @@
                                         </td>
                                         <td>
                                             @if($dostave->status == 'prihvacena')
-                                                <span class="badge bg-primary">prihvatio volonter</span>
+                                                <span class="badge bg-primary"
+                                                      style="color: #fff;background-color: #007bff;border-color: #007bff;box-shadow: none;">prihvatio volonter</span>
                                             @elseif($dostave->status == 'dostavljena')
-                                                <span class="badge bg-success">dostavljena</span>
+                                                <span class="badge bg-success"
+                                                      style="color: #fff;background-color: #28a745;border-color: #28a745;box-shadow: none;">dostavljena</span>
                                             @else
-                                                <span class="badge bg-danger">nova</span>
+                                                <span class="badge bg-danger"
+                                                      style="color: #fff;background-color: #dc3545;border-color: #dc3545;box-shadow: none;">nova</span>
                                             @endif
                                             {{--                                            {{ App\Dostave::STATUS_SELECT[$dostave->status] ?? '' }}--}}
                                         </td>

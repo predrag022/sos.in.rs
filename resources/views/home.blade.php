@@ -17,7 +17,7 @@
 
                     <div class="row">
                         <div class="panel-body">
-                            <h3>Vaša orgnizacija: {{$currentUser->organization->name ?? ''}}</h3>
+                            <h3>Vaša orgnizacija: {{$organization ?? ''}}</h3>
                             <p></p>
                         </div>
                     </div>

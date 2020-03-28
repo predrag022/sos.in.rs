@@ -1,20 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.frontend')
 @section('content')
-<div class="login-box">
-    <div class="login-logo">
-        <a href="{{ route('admin.home') }}">
-            {{ trans('panel.site_title') }}
-        </a>
-    </div>
-    <div class="login-box-body">
-        <p class="login-box-msg">
-            {{ trans('global.register') }}
-        </p>
-        <form method="POST" action="{{ route('register') }}">
-            {{ csrf_field() }}
-            <div>
+    {{--    <h1 >Servis za organizovanje volontera</h1>--}}
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <h3 class="my-4">Registracija</h3>
+            <p>Registraciona forma služi za registrovanje organizacija.</p>
+            <form name="sentMessage" id="contactForm" novalidate method="POST" action="{{ route('register') }}">
+                {{ csrf_field() }}
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                    <input type="text" name="name" class="form-control" required autofocus placeholder="{{ trans('global.user_name') }}" value="{{ old('name', null) }}">
+                    <input type="text" name="name" class="form-control" required autofocus
+                           placeholder="{{ trans('global.organization_name') }}" value="{{ old('name', null) }}">
                     @if($errors->has('name'))
                         <p class="help-block">
                             {{ $errors->first('name') }}
@@ -22,7 +17,8 @@
                     @endif
                 </div>
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input type="email" name="email" class="form-control" required placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
+                    <input type="email" name="email" class="form-control" required
+                           placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
                     @if($errors->has('email'))
                         <p class="help-block">
                             {{ $errors->first('email') }}
@@ -30,7 +26,8 @@
                     @endif
                 </div>
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <input type="password" name="password" class="form-control" required placeholder="{{ trans('global.login_password') }}">
+                    <input type="password" name="password" class="form-control" required
+                           placeholder="{{ trans('global.login_password') }}">
                     @if($errors->has('password'))
                         <p class="help-block">
                             {{ $errors->first('password') }}
@@ -38,20 +35,32 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password_confirmation" class="form-control" required placeholder="{{ trans('global.login_password_confirmation') }}">
+                    <input type="password" name="password_confirmation" class="form-control" required
+                           placeholder="{{ trans('global.login_password_confirmation') }}">
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
 
                     </div>
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">
-                            {{ trans('global.register') }}
-                        </button>
+
                     </div>
                 </div>
-            </div>
-        </form>
+                <div id="success"></div>
+                <!-- For success/fail messages -->
+                {{--                <button type="submit" class="btn btn-primary" id="sendMessageButton">Send Message</button>--}}
+                <button type="submit" class="btn btn-primary btn-block btn-flat">
+                    {{ trans('global.register') }}
+                </button>
+            </form>
+        </div>
+
     </div>
-</div>
+@endsection
+
+
+@section('scripts')
+    <!-- Contact form JavaScript -->
+    <script src="/js/jqBootstrapValidation.js"></script>
+    <script src="/js/contact_me.js"></script>
 @endsection

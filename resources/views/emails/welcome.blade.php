@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>titleeeee</title>
-</head>
+@component('mail::message')
+    #{{$user['text']}}
+    <div>
+        <br/>
+        Email: {{$user['email']}}
+        <br/>
+        Lozinka: {{$user['password_real']}}
+    </div>
 
-<body>
-<p>{{$user['text']}}</p>
-<br/>
-Email: {{$user['email']}}
-<br/>
-Lozinka: {{$user['password_real']}}
+    @component('mail::button', ['url' => url('/login')])
+        Login
+    @endcomponent
 
-login na:
-</body>
 
-</html>
+    Hvala,
+    {{ config('app.name') }}
+@endcomponent

@@ -1,6 +1,7 @@
 <?php
 
-Route::redirect('/', '/login');
+//Route::redirect('/', '/login');
+
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
@@ -8,6 +9,13 @@ Route::get('/home', function () {
 
     return redirect()->route('admin.home');
 });
+
+
+Route::get('/', 'Frontend\HomeController@index')->name('frontend.home');
+Route::get('/kontakt', 'Frontend\SiteController@kontakt')->name('frontend.kontakt');
+Route::get('/uputstvo', 'Frontend\SiteController@uputstvo')->name('frontend.uputstvo');
+Route::get('/najscesce-postavljana-pitanja', 'Frontend\SiteController@faq')->name('frontend.faq');
+
 
 Auth::routes();
 Route::get('userVerification/{token}', 'UserVerificationController@approve')->name('userVerification');
@@ -59,6 +67,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Dostaves
     Route::delete('dostaves/destroy', 'DostaveController@massDestroy')->name('dostaves.massDestroy');
+
     Route::resource('dostaves', 'DostaveController');
+
+    Route::get('dostaves/accept/{dostafe}', 'DostaveController@accept')->name('dostaves.accept');
+    Route::get('dostaves/delivered/{dostafe}', 'DostaveController@delivered')->name('dostaves.delivered');
 
 });
