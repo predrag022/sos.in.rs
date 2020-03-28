@@ -43,6 +43,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('volonteri/destroy', 'VolonteriController@massDestroy')->name('volonteri.massDestroy');
     Route::resource('volonteri', 'VolonteriController');
 
+    // VolonteriOperater
+    Route::delete('volonterioperater/destroy', 'VolonteriOperaterController@massDestroy')->name('volonterioperater.massDestroy');
+    Route::resource('volonterioperater', 'VolonteriOperaterController');
+
     // Contact Companies
     Route::delete('contact-companies/destroy', 'ContactCompanyController@massDestroy')->name('contact-companies.massDestroy');
     Route::resource('contact-companies', 'ContactCompanyController');
