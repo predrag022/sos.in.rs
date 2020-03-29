@@ -54,7 +54,7 @@ class HomeController
         $androidApp = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'empty';
 
 
-        if ($androidApp == "com.android.volonteri2020") {
+        if ($androidApp == "com.predraggajic.volonteri2020") {
             $getAndroidToken = true;
         }
 
