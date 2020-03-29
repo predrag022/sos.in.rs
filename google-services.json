@@ -1,0 +1,40 @@
+{
+    "project_info": {
+        "project_number": "640191933175",
+        "firebase_url": "https://volonteri2020.firebaseio.com",
+        "project_id": "volonteri2020",
+        "storage_bucket": "volonteri2020.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:640191933175:android:efe0df62471ccfe91381f2",
+                "android_client_info": {
+                    "package_name": "com.android.volonteri2020"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "640191933175-0636lg7ktlqc9tok8psoassu607unp90.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyB8iE0EpESGv7xyd7cH5PXWTq1jhgW4vlY"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "640191933175-0636lg7ktlqc9tok8psoassu607unp90.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
