@@ -25,7 +25,7 @@ class SendNotification extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function send()
+    public function send($notificationText)
     {
 //        $notificationBuilder = new PayloadNotificationBuilder();
 //        $notificationBuilder->setTitle('title')
@@ -35,24 +35,24 @@ class SendNotification extends Controller
 //
 //        $notification = $notificationBuilder->build();
 
+
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60 * 20);
 
-        $notificationBuilder = new PayloadNotificationBuilder('my title');
-        $notificationBuilder->setBody('Hello world')
+        $notificationBuilder = new PayloadNotificationBuilder($notificationText['title']);
+        $notificationBuilder->setBody($notificationText['body'])
             ->setSound('default');
 
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData(['a_data' => 'my_data']);
+//        $dataBuilder->addData(['a_data' => 'my_data']);
 
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        $token = "dNm7UC8qMOA:APA91bEkRkYpyvhxXsl0Q2JcgxwOVzLXWY9TefDLcJiBoK62m98eTtMMDbJXeh3xlPHbyJ-7yISY582tVrKQBrtPHEM5LCCvr0r_5_BuJAnsH_Wc5zOUihQAENMLldPMXmWPA8Eur-K5";
+        $token = $notificationText['token'];
 
         $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
-
 
     }
 }

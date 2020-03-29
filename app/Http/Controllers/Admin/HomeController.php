@@ -55,13 +55,7 @@ class HomeController
 
 
         if ($androidApp == "com.android.volonteri2020") {
-
             $getAndroidToken = true;
-
-        } else {
-//            $notification = new SendNotification();
-//            $notification->send();
-
         }
 
 
