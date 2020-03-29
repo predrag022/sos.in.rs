@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Dostave;
+use App\Http\Controllers\SendNotification;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class HomeController
@@ -55,13 +56,11 @@ class HomeController
 
         if ($androidApp == "com.android.volonteri2020") {
 
-            $userToken = $currentUser->token;
+            $getAndroidToken = true;
 
-            if ($userToken == '' || is_null($userToken)) {
-                $getAndroidToken = true;
-
-            }
-
+        } else {
+//            $notification = new SendNotification();
+//            $notification->send();
 
         }
 
