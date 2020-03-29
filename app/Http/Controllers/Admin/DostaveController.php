@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Dostave;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SendNotification;
 use App\Http\Requests\MassDestroyDostaveRequest;
 use App\Http\Requests\StoreDostaveRequest;
 use App\Http\Requests\UpdateDostaveAcceptRequest;
@@ -88,6 +89,21 @@ class DostaveController extends Controller
 
         Mail::to($dostavljac->email)->send(new KreiranaDostava($dostava));
 
+
+        if (empty($dostavljac->token) || is_null($dostavljac->token)) {
+
+        } else {
+            $notificationText = [
+                'token' => $dostavljac->token,
+                'title' => 'Dodeljena Vam je nova dostava',
+                'body' => 'Pogledajte u panelu detalje o dostavi...',
+            ];
+
+
+            $notification = new SendNotification();
+            $notification->send($notificationText);
+
+        }
 
         return redirect()->route('admin.dostaves.index');
 
