@@ -64,7 +64,7 @@ class DostaveController extends Controller
 
         $dostavljacs = $dostavljacs->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.dostaves.create', compact('organizations', 'operaters', 'dostavljacs'));
+        return view('admin.dostaves.create', compact('operaters', 'dostavljacs'));
     }
 
     public function store(StoreDostaveRequest $request)
