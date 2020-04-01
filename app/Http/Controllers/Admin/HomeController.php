@@ -19,13 +19,13 @@ class HomeController
 
         if ($currentUser->getIsOrganizacijaAttribute()) {
             $condition = 'organization_id = ' . $currentUser->id;
-            $organization = $currentUser->name;
+            $organization = $currentUser->name ?? '';
         } else if ($currentUser->getIsVolonterAttribute()) {
             $condition = 'dostavljac_id = ' . $currentUser->id;
-            $organization = $currentUser->organization->name;
+            $organization = $currentUser->organization->name ?? '';
         } else if ($currentUser->getIsOperaterAttribute()) {
             $condition = 'organization_id = ' . $currentUser->organization_id;
-            $organization = $currentUser->organization->name;
+            $organization = $currentUser->organization->name ?? '';
         }
 
 
